@@ -4,7 +4,7 @@
 #define HOST_1 0
 #define HOST_0 1
 
-#define LEDPIN = 2
+#define LEDPIN 2
 
 bool relaisState = false;
 
@@ -71,8 +71,8 @@ void setup(){
   Serial.println("\nConnected to WiFi");
 
   server.on("/", handleRoot);
-  server.on("/relais_on", relaisOn)
-  server.on("/relais_off", relaisOff)
+  server.on("/relais_on", relaisOn);
+  server.on("/relais_off", relaisOff);
   server.begin();
 }
 
@@ -100,7 +100,7 @@ void handleRoot() {
   // Sensor Werte
   msg += "</BR><div class=\"blueBox\">";
   msg += "Feuchtigkeitswerte: </BR>";
-  msg += moist[HOST_1]
+  msg += moist[HOST_1];
   msg += "</div>";
 
   // Voltage von Sensor
