@@ -1,14 +1,11 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include <ArduinoJson.h>
+#include "config.h"
 
-// WLAN Zugangsdaten hier eintragen
-const char* ssid = "";
-const char* password = "";
+// WLAN Zugangsdaten siehe config.h
 
-// Feste IP-Adresse fuer das Sensor-Modul
-IPAddress ip(192,168,0,3);
-IPAddress gateway(192,168,0,1);
-IPAddress subnet(255,255,255,0);
+// Feste IP-Adresse fuer das Sensor-Modul in config.h anpassen
 
 // HTTP-Server auf Port 80
 ESP8266WebServer server(80);
@@ -29,24 +26,34 @@ void handleRoot() {
   float voltage = readVoltage();
   int percent = map(raw, 0, 1023, 0, 100);    // einfache Naeherung fuer Prozentwert
 
-  String html = "<h1>Hygrometer Modul v1.2</h1>";
-  html += "<p>Feuchte: " + String(percent) + "%</p>";
-  html += "<p>Spannung: " + String(voltage, 2) + " V</p>";
-  html += "<p>Rohwert: " + String(raw) + "</p>";
+  DynamicJsonDocument doc(128);
+  doc["value"] = raw;
+  doc["voltage"] = voltage;
+  doc["percent"] = percent;
 
-  server.send(200, "text/html", html);
+  String json;
+  serializeJson(doc, json);
+  server.send(200, "application/json", json);
 }
 
 // Gibt nur die Spannung als Klartext zurueck
 void handleVoltage() {
   float voltage = readVoltage();
-  server.send(200, "text/plain", String(voltage, 2));
+  DynamicJsonDocument doc(64);
+  doc["voltage"] = voltage;
+  String json;
+  serializeJson(doc, json);
+  server.send(200, "application/json", json);
 }
 
 // Gibt nur den Rohwert 0..1023 zurueck
 void handleValue() {
   int raw = analogRead(SENSOR_PIN);
-  server.send(200, "text/plain", String(raw));
+  DynamicJsonDocument doc(64);
+  doc["value"] = raw;
+  String json;
+  serializeJson(doc, json);
+  server.send(200, "application/json", json);
 }
 
 void setup() {
@@ -56,8 +63,8 @@ void setup() {
   pinMode(SENSOR_PIN, INPUT);
 
   // Verbindung zum WLAN herstellen
-  WiFi.config(ip, gateway, subnet);
-  WiFi.begin(ssid, password);
+  WiFi.config(HYGROMETER_IP, GATEWAY_IP, SUBNET_MASK);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   Serial.print("Verbinde mit dem WLAN");
   while (WiFi.status() != WL_CONNECTED) {
