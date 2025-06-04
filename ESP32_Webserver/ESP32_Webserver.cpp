@@ -17,7 +17,13 @@ String moist[2];
 
 unsigned long requestPeriod = 15000;
 
-String headAndTitle = 
+// Funktionsprototypen
+void handleRoot();
+void requestESP8266(int hostNum);
+void relaisOn();
+void relaisOff();
+
+String headAndTitle =
 "<head><style>"
   ".button {"
     "border: none;"
