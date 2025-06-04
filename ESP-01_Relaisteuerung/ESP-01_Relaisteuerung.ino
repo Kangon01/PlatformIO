@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid     = "KabelBox-9B90";
-const char* password = "13311814531144239571";
+const char* ssid     = "";
+const char* password = "";
 
 IPAddress ip(192,168,0,4);
 IPAddress gateway(192,168,0,1);
