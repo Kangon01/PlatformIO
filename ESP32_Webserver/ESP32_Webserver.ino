@@ -1,5 +1,6 @@
 #include <WebServer.h>
 #include <WiFi.h>
+#include <ArduinoJson.h>
 
 #define HOST_1 0
 #define HOST_0 1
@@ -122,25 +123,30 @@ void requestESP8266(int hostNum) {
   }
 
   String url = "/voltage";
-  client.print(String("GET ") + url + 
-              " HTTP/1.1\r\n" + 
-              "Host: " + host + "\r\n" + 
+  client.print(String("GET ") + url +
+              " HTTP/1.1\r\n" +
+              "Host: " + host + "\r\n" +
               "Connection: close\r\n\r\n");
-              
-  unsigned long timeout = millis();
-  while (!client.available() && ((millis() - timeout) < 3000)) {
-    delay(1);
+
+  client.setTimeout(3000);
+  if (!client.find("\r\n\r\n")) {
+    Serial.println("Fehler: Ungueltige Antwort vom Server");
+    client.stop();
+    return;
   }
 
-  while (client.available()) {
-    String line = client.readStringUntil('\r');
-    if(line != "") {
-      voltage[hostNum] = line;
-    }
-  }
-  
+  String body = client.readString();
   client.stop();
   Serial.println("Verbindung zu ESP-01 geschlossen");
+
+  DynamicJsonDocument doc(128);
+  DeserializationError error = deserializeJson(doc, body);
+  if (error) {
+    Serial.println("Fehler: JSON konnte nicht geparst werden");
+    return;
+  }
+
+  voltage[hostNum] = String(doc["voltage"].as<float>(), 2);
 }
 
 void relaisOn() {
