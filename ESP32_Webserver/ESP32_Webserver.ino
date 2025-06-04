@@ -8,8 +8,8 @@
 
 bool relaisState = false;
 
-const char* ssid = "KabelBox-9B90";
-const char* pass = "13311814531144239571";
+const char* ssid = "";
+const char* pass = "";
 
 const char* host_1 = "192.168.0.3"; // Feuchtigkeitssensor (ESP-01)
 const char* host_2 = "192.168.0.4"; // Relaissteuerung (ESP-01)
