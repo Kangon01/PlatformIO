@@ -1,12 +1,9 @@
 #include <ESP8266WiFi.h>
 
 #include <time.h>
- 
-// WLAN-Daten hier eintragen
+#include "config.h"
 
-const char* ssid = "";
-
-const char* password = "";
+// WLAN-Daten siehe config.h
  
 // Liste der zu testenden NTP-Server
 
@@ -36,7 +33,7 @@ void setup() {
 
   Serial.println("Starte NTP Test...");
  
-  WiFi.begin(ssid, password);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   Serial.print("Verbinde mit WLAN");
 

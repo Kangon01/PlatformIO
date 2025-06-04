@@ -1,12 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include "config.h"
 
-const char* ssid     = "";
-const char* password = "";
 
-IPAddress ip(192,168,0,4);
-IPAddress gateway(192,168,0,1);
-IPAddress subnet(255,255,255,0);
 
 #define RELAY_PIN 0
 
@@ -18,8 +14,8 @@ void setup() {
   digitalWrite(RELAY_PIN, LOW);
 
   // Mit WLAN verbinden
-  WiFi.config(ip, gateway, subnet);
-  WiFi.begin(ssid, password);
+  WiFi.config(RELAIS_IP, GATEWAY_IP, SUBNET_MASK);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   Serial.print("Verbinde mit dem WLAN");
   while(WiFi.status() != WL_CONNECTED) {

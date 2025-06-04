@@ -1,14 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include "config.h"
 
-// WLAN Zugangsdaten hier eintragen
-const char* ssid = "";
-const char* password = "";
+// WLAN Zugangsdaten siehe config.h
 
-// Feste IP-Adresse fuer das Sensor-Modul
-IPAddress ip(192,168,0,3);
-IPAddress gateway(192,168,0,1);
-IPAddress subnet(255,255,255,0);
+// Feste IP-Adresse fuer das Sensor-Modul in config.h anpassen
 
 // HTTP-Server auf Port 80
 ESP8266WebServer server(80);
@@ -56,8 +52,8 @@ void setup() {
   pinMode(SENSOR_PIN, INPUT);
 
   // Verbindung zum WLAN herstellen
-  WiFi.config(ip, gateway, subnet);
-  WiFi.begin(ssid, password);
+  WiFi.config(HYGROMETER_IP, GATEWAY_IP, SUBNET_MASK);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   Serial.print("Verbinde mit dem WLAN");
   while (WiFi.status() != WL_CONNECTED) {
