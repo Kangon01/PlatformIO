@@ -44,7 +44,7 @@ Die Sketche dienen als Ausgangsbasis fuer eigene Experimente im Bereich Heimauto
 - `libraries/` – Lokale Kopien benoetigter Bibliotheken (ArduinoJson, NTPClient)
 
 ## Beispielsketche
-Die oben genannten Unterordner enthalten jeweils eine `.ino`-Datei. Vor dem Upload muessen SSID und WLAN-Passwort angepasst werden. Der ESP32-Webserver erwartet, dass die beiden ESP-01-Module feste IP-Adressen erhalten.
+Die oben genannten Unterordner enthalten jetzt jeweils eine `.cpp`-Datei. Die Projekte werden nicht mehr in der Arduino‑IDE, sondern mit PlatformIO in CLion kompiliert und hochgeladen. Vor dem Upload muessen SSID und WLAN-Passwort angepasst werden. Der ESP32-Webserver erwartet, dass die beiden ESP‑01-Module feste IP-Adressen erhalten.
 
 ## Bibliotheken
 Fuer die Projekte werden die folgenden Bibliotheken benoetigt:
@@ -53,4 +53,4 @@ Fuer die Projekte werden die folgenden Bibliotheken benoetigt:
 - **ArduinoJson** (liegt im Ordner `libraries/ArduinoJson`)
 - **NTPClient** (im Ordner `libraries/NTPClient`)
 
-Die letzten beiden sind dem Repository bereits beigelegt und koennen direkt in der Arduino-IDE eingebunden werden.
+Die letzten beiden sind dem Repository bereits beigelegt und koennen bei Bedarf ueber PlatformIO eingebunden werden.
