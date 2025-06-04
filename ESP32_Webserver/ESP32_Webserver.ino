@@ -1,6 +1,7 @@
 #include <WebServer.h>
 #include <WiFi.h>
 #include <ArduinoJson.h>
+#include "config.h"
 
 #define HOST_1 0
 #define HOST_0 1
@@ -8,16 +9,6 @@
 #define LEDPIN 2
 
 bool relaisState = false;
-
-const char* ssid = "";
-const char* pass = "";
-
-const char* host_1 = "192.168.0.3"; // Feuchtigkeitssensor (ESP-01)
-const char* host_2 = "192.168.0.4"; // Relaissteuerung (ESP-01)
-
-IPAddress ip(192,168,0,2);
-IPAddress gateway(192,168,0,1);
-IPAddress subnet(255,255,255,0);
 
 WebServer server(80);
 
@@ -58,8 +49,8 @@ String headAndTitle =
 void setup(){
   Serial.begin(115200);
   pinMode(LEDPIN, OUTPUT);
-  WiFi.config(ip, gateway, subnet);
-  WiFi.begin(ssid, pass);
+  WiFi.config(ESP32_IP, GATEWAY_IP, SUBNET_MASK);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   // Blink-LED beim Verbindungsaufbau
   while (WiFi.status() != WL_CONNECTED) {
@@ -115,7 +106,7 @@ void handleRoot() {
 
 void requestESP8266(int hostNum) {
   WiFiClient client;
-  const char* host = (hostNum == HOST_1) ? host_1 : host_2;
+  const char* host = (hostNum == HOST_1) ? HYGROMETER_HOST : RELAIS_HOST;
 
   if (!client.connect(host, 80)) {
     Serial.printf("Fehler: Verbindung zu ESP-01 (%s) fehlgeschlagen.\n", host);
@@ -153,8 +144,8 @@ void relaisOn() {
   relaisState = true;
 
   WiFiClient client;
-  if (client.connect(host_2, 80)) {
-    client.print(String("GET /on HTTP/1.1\r\nHost: ") + host_2 + "\r\nConnection: close\r\n\r\n");
+  if (client.connect(RELAIS_HOST, 80)) {
+    client.print(String("GET /on HTTP/1.1\r\nHost: ") + RELAIS_HOST + "\r\nConnection: close\r\n\r\n");
     delay(100);
     client.stop();
     Serial.println("Relais EIN gesendet an ESP-01");
@@ -170,8 +161,8 @@ void relaisOff() {
 
 
   WiFiClient client;
-  if (client.connect(host_2, 80)) {
-    client.print(String("GET /off HTTP/1.1\r\nHost: ") + host_2 + "\r\nConnection: close\r\n\r\n");
+  if (client.connect(RELAIS_HOST, 80)) {
+    client.print(String("GET /off HTTP/1.1\r\nHost: ") + RELAIS_HOST + "\r\nConnection: close\r\n\r\n");
     delay(100);
     client.stop();
     Serial.println("Relais AUS gesendet an ESP-01");
