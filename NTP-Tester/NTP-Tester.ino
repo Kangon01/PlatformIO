@@ -4,7 +4,7 @@
  
 // WLAN-Daten hier eintragen
 
-const char* ssid = "KabelBox-9B90";
+const char* ssid = "";
 
 const char* password = "13311814531144239571";
  
