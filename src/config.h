@@ -2,8 +2,8 @@
 #define CONFIG_H
 
 // WLAN-Zugangsdaten eintragen
-#define WIFI_SSID "YOUR_WIFI_SSID"
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#define WIFI_SSID "KabelBox-9B90"
+#define WIFI_PASSWORD "13311814531144239571"
 
 // IP-Adressen der einzelnen Module
 #define ESP32_IP IPAddress(192, 168, 0, 2)

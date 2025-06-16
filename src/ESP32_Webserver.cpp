@@ -24,33 +24,56 @@ void relaisOn();
 void relaisOff();
 
 String headAndTitle =
-"<head><style>"
-  ".button {"
-    "border: none;"
-    "color: white;"
-    "width: 350px;"
-    "padding: 20px;"
-    "text-align: center;"
-    "margin: 20px 200px;"
-  "}"
-  ".greenButton {background-color: green; font-size: 64px;}"
-  ".greenButton:hover {background-color: darkgreen; font-size: 64px;}"
-  ".redButton {background-color: red; font-size: 64px;}"
-  ".redButton:hover {background-color: darkred; font-size: 64px;}"
-  ".blueBox {"
-    "background-color: blue;"
-    "color: white;"
-    "width: 350px;" 
-    "padding: 20px;"
-    "text-align: center;"
-    "font-size: 50px;"
-    "font-family: arial;"
-  "}"
-"</style>"
-"<meta http-equiv=\"refresh\" content=\"10\">"
-"</head>"
-"<h1 align=\"center\">ESP32 Control Center</h1>"
-"<div align=\"center\">Relaisschaltung und Sensorwerte</BR></BR></div>";
+  "<!DOCTYPE html>"
+  "<html lang=\"de\">"
+  "<head>"
+   "<meta charset=\"utf-8\">"
+   "<meta http-equiv=\"refresh\" content=\"10\">"
+   "<title>ESP32 Control Center</title>"
+   "<style>"
+     ".button {"
+       "border: none;"
+       "color: white;"
+       "width: 350px;"
+       "padding: 20px;"
+       "text-align: center;"
+       "margin: 20px auto;"
+       "display: block;"
+     "}"
+     ".greenButton { background-color: green; font-size: 64px; }"
+     ".greenButton:hover { background-color: darkgreen; }"
+     ".redButton { background-color: red; font-size: 64px; }"
+     ".redButton:hover { background-color: darkred; }"
+
+     ".centerBox {"
+       "text-align: center;"
+       "margin: 0 auto;"
+     "}"
+
+     ".blueBox {"
+       "background-color: blue;"
+       "color: white;"
+       "display: block;"
+       "width: 90%;"
+       "max-width: 600px;"
+       "margin: 20px auto;"
+       "padding: 20px;"
+       "text-align: center;"
+       "font-size: 50px;"
+       "font-family: Arial, sans-serif;"
+       "box-sizing: border-box;"
+       "word-wrap: break-word;"
+       "line-height: 1.2;"
+     "}"
+
+     "h1 { text-align: center; }"
+   "</style>"
+ "</head>"
+ "<body>"
+   "<h1>ESP32 Control Center</h1>"
+   "<p style=\"text-align:center;\">Relaisschaltung und Sensorwerte</p>"
+ "</body>"
+ "</html>";
 
 void setup(){
   Serial.begin(115200);
@@ -85,29 +108,33 @@ void loop() {
 }
 
 void handleRoot() {
+  // Basis-HTML
   String msg = headAndTitle;
-  msg += "<div align=\"center\";>";
+  msg.replace("</body>", "");
+  msg += "<div class=\"centerBox\">";
 
-  // Button Relais
-   if (relaisState) {
+  // Relais-Button
+  if (relaisState) {
     msg += R"(<a href="/relais_off"><button class="button redButton">Relais AUS</button></a>)";
   } else {
     msg += R"(<a href="/relais_on"><button class="button greenButton">Relais EIN</button></a>)";
   }
 
-  // Sensor Werte
-  msg += "</BR><div class=\"blueBox\">";
-  msg += "Feuchtigkeitswerte: </BR>";
-  msg += moist[HOST_1];
-  msg += "</div>";
+  // Feuchtigkeitswerte
+  msg += "<div class=\"blueBox\">"
+         "<strong>Feuchtigkeitswerte:</strong><br>" +
+         moist[HOST_1] +
+         "</div>";
 
-  // Voltage von Sensor
-  msg += "</BR><div class=\"blueBox\">";
-  msg += "Spannung [V]: </BR>";
-  msg += voltage[HOST_1];
-  msg += "</div></div>";
+  // Spannung
+  msg += "<div class=\"blueBox\">"
+         "<strong>Spannung [V]:</strong><br>" +
+         voltage[HOST_1] +
+         "</div>";
 
-  server.send(200, "text/html", msg);
+  msg += "</div></body></html>";
+
+  server.send(200, "text/html; charset=utf-8", msg);
 }
 
 void requestESP8266(const int hostNum) {
