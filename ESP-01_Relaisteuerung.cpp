@@ -1,8 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
-#include "config.h"
-
-
+#include "../src/config.h"
 
 #define RELAY_PIN 0
 

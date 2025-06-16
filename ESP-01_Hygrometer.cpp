@@ -3,19 +3,15 @@
 #include <ArduinoJson.h>
 #include "config.h"
 
-// WLAN Zugangsdaten siehe config.h
-
-// Feste IP-Adresse fuer das Sensor-Modul in config.h anpassen
-
 // HTTP-Server auf Port 80
 ESP8266WebServer server(80);
 
 // Anschluss des Hygrometers
-const int SENSOR_PIN = A0;
+constexpr int SENSOR_PIN = A0;
 
 // Helferfunktion zum Auslesen der Spannung am Sensor
 float readVoltage() {
-  int raw = analogRead(SENSOR_PIN);            // Rohwert 0..1023
+  const int raw = analogRead(SENSOR_PIN);            // Rohwert 0..1023
   // Der ESP-01 besitzt einen 1V ADC, ggf. sorgt die Platine fuer eine
   // Anpassung auf 3.3V. Hier gehen wir von einer 1V Referenz aus.
   return (raw / 1023.0) * 1.0;                 // Spannung in Volt
@@ -24,7 +20,7 @@ float readVoltage() {
 void handleRoot() {
   int raw = analogRead(SENSOR_PIN);
   float voltage = readVoltage();
-  int percent = map(raw, 0, 1023, 0, 100);    // einfache Naeherung fuer Prozentwert
+  int percent = map(raw, 0, 1023, 0, 100);    // einfache Näherung für Prozentwert
 
   DynamicJsonDocument doc(128);
   doc["value"] = raw;
