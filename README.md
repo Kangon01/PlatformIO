@@ -52,7 +52,3 @@ Fuer die Projekte werden die folgenden Bibliotheken benoetigt:
 - **ESP8266WebServer** bzw. **WebServer** – fuer die HTTP-Schnittstelle
 - **ArduinoJson** (liegt im Ordner `libraries/ArduinoJson`)
 - **NTPClient** (im Ordner `libraries/NTPClient`)
-
-Die letzten beiden sind dem Repository bereits beigelegt und koennen bei Bedarf ueber PlatformIO eingebunden werden.
-# PlatformIO
-# PlatformIO
